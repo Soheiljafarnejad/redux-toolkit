@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, completedTodo, deleteTodo } from "../features/todo/todoSlice";
 
 const TodoComponent = () => {
   return (
@@ -12,6 +14,7 @@ const TodoComponent = () => {
 export default TodoComponent;
 
 const TodoForm = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   return (
     <div className="container">
@@ -20,20 +23,16 @@ const TodoForm = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button>add</button>
+      <button onClick={() => dispatch(addTodo(value))}>add</button>
     </div>
   );
 };
 
 const TodoList = () => {
-  const todos = [
-    { title: "one todo", id: 1, completed: false },
-    { title: "two todo", id: 2, completed: false },
-    { title: "there todo", id: 3, completed: false },
-  ];
+  const { todo } = useSelector((store) => store.todoReducer);
   return (
     <section>
-      {todos.map((item) => {
+      {todo.map((item) => {
         return <Todo todo={item} key={item.id} />;
       })}
     </section>
@@ -41,14 +40,21 @@ const TodoList = () => {
 };
 
 const Todo = ({ todo }) => {
+  const dispatch = useDispatch();
   const { title, completed, id } = todo;
   return (
     <section className="todo">
-      <input type="radio" name="todo" id={id} checked={completed} />
+      <input
+        type="radio"
+        name={id}
+        id={id}
+        checked={completed}
+        onChange={() => completed}
+      />
       <label htmlFor={id}>{title}</label>
       <div>
-        <button>completed</button>
-        <button>delete</button>
+        <button onClick={() => dispatch(completedTodo(id))}>completed</button>
+        <button onClick={() => dispatch(deleteTodo(id))}>delete</button>
       </div>
     </section>
   );
