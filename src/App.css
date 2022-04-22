@@ -1,9 +1,9 @@
 .App {
+  width: 100%;
+  padding: 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .container {
@@ -15,4 +15,23 @@
 
 .box {
   padding: 2rem 0;
+}
+
+.todo {
+  background-color: bisque;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.todo input[type="radio"] {
+  display: none;
+}
+
+.todo input[type="radio"]:checked + label {
+  text-decoration: line-through;
+  font-weight: 700;
 }
