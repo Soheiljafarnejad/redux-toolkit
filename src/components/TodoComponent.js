@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, completedTodo, deleteTodo } from "../features/todo/todoSlice";
+import {
+  addTodo,
+  completedTodo,
+  deleteTodo,
+  getAsyncTodos,
+} from "../features/todo/todoSlice";
 
 const TodoComponent = () => {
   return (
@@ -29,7 +34,20 @@ const TodoForm = () => {
 };
 
 const TodoList = () => {
-  const { todo } = useSelector((store) => store.todoReducer);
+  const { todo, error, loading } = useSelector((store) => store.todoReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAsyncTodos());
+  }, [dispatch]);
+
+  if (loading) {
+    return <p>loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <section>
       {todo.map((item) => {
