@@ -1,17 +1,17 @@
 {
   "todos": [
     {
-      "title": "test1",
+      "title": "test 1",
       "completed": false,
       "id": 1
     },
     {
-      "title": "test2",
-      "completed": false,
+      "title": "test 2",
+      "completed": true,
       "id": 2
     },
     {
-      "title": "test3",
+      "title": "test 3",
       "completed": false,
       "id": 3
     }

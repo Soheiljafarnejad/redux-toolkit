@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   asyncAddTodo,
   asyncCompletedTodo,
-  deleteTodo,
+  asyncDeleteTodo,
   asyncGetTodo,
 } from "../features/todo/todoSlice";
 
@@ -21,6 +21,10 @@ export default TodoComponent;
 const TodoForm = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
+  const handler = () => {
+    dispatch(asyncAddTodo(value));
+    setValue("");
+  };
   return (
     <div className="container">
       <input
@@ -28,7 +32,7 @@ const TodoForm = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button onClick={() => dispatch(asyncAddTodo(value))}>add</button>
+      <button onClick={handler}>add</button>
     </div>
   );
 };
@@ -71,8 +75,10 @@ const Todo = ({ todo }) => {
       />
       <label htmlFor={id}>{title}</label>
       <div>
-        <button onClick={() => dispatch(asyncCompletedTodo(todo))}>completed</button>
-        <button onClick={() => dispatch(deleteTodo(id))}>delete</button>
+        <button onClick={() => dispatch(asyncCompletedTodo(todo))}>
+          completed
+        </button>
+        <button onClick={() => dispatch(asyncDeleteTodo(todo))}>delete</button>
       </div>
     </section>
   );

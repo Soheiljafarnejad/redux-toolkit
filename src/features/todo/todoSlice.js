@@ -48,6 +48,18 @@ export const asyncCompletedTodo = createAsyncThunk(
   }
 );
 
+export const asyncDeleteTodo = createAsyncThunk(
+  "todo/asyncDeleteTodo",
+  async (payload, { rejectWithValue }) => {
+    try {
+      await axios.delete(`http://localhost:3001/todos/${payload.id}`);
+      return payload;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const todoSlice = createSlice({
   name: "todo",
   initialState,
@@ -89,6 +101,10 @@ const todoSlice = createSlice({
     [asyncCompletedTodo.fulfilled]: (state, action) => {
       const selected = state.todo.find((item) => item.id === action.payload.id);
       selected.completed = action.payload.completed;
+    },
+    // delete todo
+    [asyncDeleteTodo.fulfilled]: (state, action) => {
+      state.todo = state.todo.filter((item) => item.id !== action.payload.id);
     },
   },
 });
