@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   asyncAddTodo,
-  completedTodo,
+  asyncCompletedTodo,
   deleteTodo,
   asyncGetTodo,
 } from "../features/todo/todoSlice";
@@ -71,7 +71,7 @@ const Todo = ({ todo }) => {
       />
       <label htmlFor={id}>{title}</label>
       <div>
-        <button onClick={() => dispatch(completedTodo(id))}>completed</button>
+        <button onClick={() => dispatch(asyncCompletedTodo(todo))}>completed</button>
         <button onClick={() => dispatch(deleteTodo(id))}>delete</button>
       </div>
     </section>
