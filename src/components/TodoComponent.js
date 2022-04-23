@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addTodo,
+  asyncAddTodo,
   completedTodo,
   deleteTodo,
-  getAsyncTodos,
+  asyncGetTodo,
 } from "../features/todo/todoSlice";
 
 const TodoComponent = () => {
@@ -28,7 +28,7 @@ const TodoForm = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button onClick={() => dispatch(addTodo(value))}>add</button>
+      <button onClick={() => dispatch(asyncAddTodo(value))}>add</button>
     </div>
   );
 };
@@ -37,7 +37,7 @@ const TodoList = () => {
   const { todo, error, loading } = useSelector((store) => store.todoReducer);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAsyncTodos());
+    dispatch(asyncGetTodo());
   }, [dispatch]);
 
   if (loading) {

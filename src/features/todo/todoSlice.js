@@ -3,11 +3,26 @@ import axios from "axios";
 
 const initialState = { todo: [], error: false, loading: false };
 
-export const getAsyncTodos = createAsyncThunk(
-  "todo/getAsyncTodos",
+export const asyncGetTodo = createAsyncThunk(
+  "todo/asyncGetTodo",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get("http://localhost:3001/todos");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const asyncAddTodo = createAsyncThunk(
+  "todo/asyncAddTodo",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("http://localhost:3001/todos", {
+        title: payload,
+        completed: false,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -36,16 +51,20 @@ const todoSlice = createSlice({
     },
   },
   extraReducers: {
-    [getAsyncTodos.pending]: (state, action) => {
+    [asyncGetTodo.pending]: (state, action) => {
       return { ...state, todo: [], error: false, loading: true };
     },
 
-    [getAsyncTodos.fulfilled]: (state, action) => {
+    [asyncGetTodo.rejected]: (state, action) => {
+      return { ...state, todo: [], error: action.payload, loading: false };
+    },
+
+    [asyncGetTodo.fulfilled]: (state, action) => {
       return { ...state, todo: action.payload, error: false, loading: false };
     },
 
-    [getAsyncTodos.rejected]: (state, action) => {
-      return { ...state, todo: [], error: action.payload, loading: false };
+    [asyncAddTodo.fulfilled]: (state, action) => {
+      state.todo.push(action.payload);
     },
   },
 });
